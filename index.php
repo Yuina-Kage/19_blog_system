@@ -1,3 +1,9 @@
+<?php
+
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -14,6 +20,25 @@
   <div class="flex-col-area">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
       <a href="http://localhost/19_blog_system/index.php" class="navbar-brand">Camp Blog</a>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+          <?php if ($_SESSION['id']) : ?>
+            <li class="nav-item">
+              <a href="sign_out.php" class="nav-link">ログアウト</a>
+            </li>
+            <li class="nav-item">
+              <a href="new.php" class="nav-link">New Post</a>
+            </li>
+            <?php else : ?>
+              <li class="nav-item">
+              <a href="sign_in.php" class="nav-link">ログイン</a>
+            </li>
+            <li class="nav-item">
+              <a href="sign_up.php" class="nav-link">アカウント登録</a>
+            </li>
+            <?php endif; ?>
+        </ul>
+      </div>
     </nav>
     <footer class="footer font-small bg-dark">
       <div class="footer-copyright text-center py-3 text-light">&copy; 2020 Camp Blog</div>

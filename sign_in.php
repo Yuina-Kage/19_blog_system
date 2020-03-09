@@ -38,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $_SESSION['id'] = $user['id'];
       header('Location: index.php');
+      // $url = $_SERVER['HTTP_REFERER'];でもOK
       exit;
     } else {
       $errors[] = 'メールアドレスかパスワードが間違っています';

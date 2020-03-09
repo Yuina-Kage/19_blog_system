@@ -5,7 +5,7 @@ require_once('config.php');
 require_once('functions.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $email = $_POST['email'];
+$email = $_POST['email'];
   $name = $_POST['name'];
   $password = $_POST['password'];
 

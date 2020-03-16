@@ -46,9 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute();
     
     // // 登録直後のID取得
-    // $id = $dbh->lastInsertId();
-    // header("Location: show.php?id={$id}");
-    // exit;
+    $id = $dbh->lastInsertId();
+    header("Location: show.php?id={$id}");
+    exit;
   }
 }
 
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   <select name="category_id" class="form-control" required>
                     <option value="" disabled selected>選択して下さい</option>
                     <?php foreach ($categories as $c)  :?>
-                      <option value="<?php echo $c['id']; ?>"><?php echo $c['name']; ?>
+                      <option value="<?php echo h($c['id']); ?>"><?php echo h($c['name']); ?>
                     </option>
                     <?php endforeach; ?>
                   </select>

@@ -27,7 +27,7 @@ $email = $_POST['email'];
   $dbh = connectDb();
   $sql = "selct * from users where email = :email";
   $stmt = $dbh->prepare($sql);
-  $stmt->bindParam(":email", $email);
+  $stmt->bindParam(":email", $email, PDO::PARAM_STR);
   $stmt->execute();
   $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -40,10 +40,10 @@ $email = $_POST['email'];
       "(email, name, password, created_at, updated_at) values " . 
       "(:email, :name, :password, now(), now())";
     $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(":email", $email);
-    $stmt->bindParam(":name", $name);
+    $stmt->bindParam(":email", $email, PDO::PARAM_STR);
+    $stmt->bindParam(":name", $name, PDO::PARAM_STR);
     $pw_hash = password_hash($password, PASSWORD_DEFAULT);
-    $stmt->bindParam(":password", $pw_hash);
+    $stmt->bindParam(":password", $pw_hash, PDO::PARAM_STR);
     $stmt->execute();
 
     header('Location: sign_in.php');
@@ -66,7 +66,7 @@ $email = $_POST['email'];
 </head>
 <body>
   <div class="flex-col-area">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
       <a href="http://localhost/19_blog_system/index.php" class="navbar-brand">Camp Blog</a>
       <div class="collapse navbar-collapse" id="navbarToggle">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">

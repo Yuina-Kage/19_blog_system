@@ -32,7 +32,7 @@ $stmt->execute();
 
 $post = $stmt->fetch(PDO::FETCH_ASSOC);
 if(empty($post)) {
-  header('Locaton: index.php');
+  header('Location: index.php');
   exit;
 }
 

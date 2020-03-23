@@ -22,25 +22,23 @@ left join
 on p.user_id = u.id
 SQL;  
 
-if (isset($_GET['category_id']) && is_numeric($_GET['category_id'])) {
-    $category_id = $_GET['category_id'];
-    $sql_where = " where p.category_id = :category_id";
-  } else {
-    $sql_where = "";
-  }
+// カテゴリーidの条件付加
+if (isset($_GET['category_id']) &&
+    is_numeric($_GET['category_id'])) {
+  $category_id = $_GET['category_id'];
+  $sql_where = " where category_id = :category_id";
+}
 
-$sql_order = " order by p.created_at desc";
+$sql_order = " order by created_at desc";
 
-// SQL結合
+//SQL結合
 $sql = $sql . $sql_where . $sql_order;
-echo $sql;
 $stmt = $dbh->prepare($sql);
+// カテゴリーが指定されていた場合
 if ($category_id) {
   $stmt->bindParam(":category_id", $category_id, PDO::PARAM_INT);
 }
 
-
-$stmt = $dbh->prepare($sql);
 $stmt->execute();
 $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

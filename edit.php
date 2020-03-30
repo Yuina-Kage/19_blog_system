@@ -1,9 +1,10 @@
 <?php
 
-require_once('config.php');
 require_once('functions.php');
+require_once('categories.php');
+require_once('posts.php');
 
-session_start();
+// session_start();
 
 // GETとPOST同じ内容とりたい時はREQUEST
 $id = $_REQUEST['id'];
@@ -12,71 +13,27 @@ if(!is_numeric($id)) {
   exit;
 }
 
-// わざとこの位置
-$dbh = connectDb(); 
+$post = getPostFindById($id);
 
-$sql = "select * from posts where id = :id";
-$stmt = $dbh->prepare($sql);
-$stmt->bindParam(":id", $id, PDO::PARAM_INT);
-$stmt->execute();
-$post = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  $title = $_POST['title'];
-  $body = $_POST['body'];
-  $category_id = $_POST['category_id'];
-
-  $errors = [];
-
-  if($title == '') {
-    $errors = 'タイトルが未入力です';
-  }
-
-  if($category_id == '') {
-    $errors = 'カテゴリーが未選択です';
-  }
-        
-  if($body == '') {
-    $errors = '本文が未入力です';
-  }
-
-  if(empty($errors)) {
-    $sql = <<<SQL
-    
-    update
-      posts
-    set
-      title = :title,
-      body = :body,
-      category_id = :category_id
-    where
-      id = :id  
-    SQL;
-
-    $stmt = $dbh->prepare($sql);
-    
-    $stmt->bindParam(':title', $title, PDO::PARAM_STR);
-    $stmt->bindParam(':body', $body, PDO::PARAM_STR);
-    $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    
-    $stmt->execute();
-    header("Location: show.php?id={$id}");
-    exit;
-  }
-}
-
-if(empty($post)) {
+if (empty($post)) {
   header('Location: index.php');
   exit;
 }
 
-$sql = "select * from categories";
-$stmt = $dbh->prepare($sql);
-$stmt->execute();
+$categories = getAllCategories();
 
-$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// わざとこの位置
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  
+  $errors = inputChkPost($_POST);
+
+
+  updatePost($_POST);
+  header("Location: show.php?id={$id}");
+  exit;
+}
+
 
 ?>
 
